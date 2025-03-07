@@ -10,7 +10,8 @@ def test_describe_image(image_path, past_context=None):
         past_context (str, optional): Previous context to consider when describing the image
     """
     # API endpoint URL (assuming Flask is running locally on default port)
-    url = 'http://127.0.0.1:5000/vision'
+    url = 'https://vision-assistant-sepia.vercel.app/vision'
+    
     
     # Prepare the files and data for the request
     files = {
