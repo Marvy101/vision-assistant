@@ -1,5 +1,7 @@
-from flask import Flask, request
-from main import process_file
+from flask import Flask, request, send_file
+from main import process_file, process_text_to_speech
+import tempfile
+import os
 
 app = Flask(__name__)
 
@@ -284,5 +286,49 @@ def upload_file():
         except Exception as e:
             return {'error': str(e)}, 500
         
+@app.route('/text-to-speech', methods=['POST'])
+def text_to_speech():
+    # Check API key
+    if request.headers.get('key') != API_KEY:
+        return {'error': 'Invalid API key'}, 401
+
+    # Get text and voice from request
+    data = request.get_json()
+    if not data or 'text' not in data:
+        return {'error': 'No text provided'}, 400
+    
+    text = data['text']
+    voice = data.get('voice', 'alloy')  # Default to alloy if no voice specified
+
+    # Process the request
+    audio_data, status_code = process_text_to_speech(text, voice)
+    
+    # If there was an error, return it
+    if status_code != 200:
+        return audio_data, status_code
+
+    try:
+        # Create a temporary file for the speech
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
+            # Write the audio data to the file
+            temp_file.write(audio_data)
+            temp_file.flush()
+            
+            # Send the file back to the client
+            return send_file(
+                temp_file.name,
+                mimetype='audio/mpeg',
+                as_attachment=True,
+                download_name='speech.mp3'
+            )
+    except Exception as e:
+        return {'error': str(e)}, 500
+    finally:
+        # Clean up the temporary file
+        try:
+            os.unlink(temp_file.name)
+        except:
+            pass
+
 if __name__ == '__main__':
     app.run(debug=True)

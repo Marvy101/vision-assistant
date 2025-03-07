@@ -82,7 +82,24 @@ Only include "read_out" when the text is a crucial part of the image. If the tex
     # Parse and return the JSON response
     return json.loads(response.choices[0].message.content)
 
-
+def text_to_speech(text: str, voice: str = "alloy") -> bytes:
+    """
+    Convert text to speech using OpenAI's TTS API.
+    
+    Args:
+        text (str): The text to convert to speech
+        voice (str, optional): The voice to use. Defaults to "alloy".
+                             Options: alloy, echo, fable, onyx, nova, shimmer, coral, sage
+    
+    Returns:
+        bytes: The audio data as bytes
+    """
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice=voice,
+        input=text
+    )
+    return response.content
 
 path = "/Users/pelumidada/Documents/code/vision-assistant/testimage2.jpg"
 
