@@ -50,7 +50,7 @@ def process_file(file: FileStorage, past_context: str = None, language: str = "e
             # Clean up the temporary file
             os.unlink(temp_file.name)
 
-def process_text_to_speech(text: str, voice: str = "alloy", language: str = "en") -> Tuple[Union[bytes, Dict[str, str]], int]:
+def process_text_to_speech(text: str, voice: str = "alloy") -> Tuple[Union[bytes, Dict[str, str]], int]:
     """
     Process text to speech conversion request.
     
@@ -62,10 +62,7 @@ def process_text_to_speech(text: str, voice: str = "alloy", language: str = "en"
     Returns:
         Tuple[Union[bytes, Dict[str, str]], int]: Audio data and status code, or error message and status code
     """
-    # Validate language
-    if language not in SUPPORTED_LANGUAGES:
-        return {'error': f'Unsupported language code. Supported languages are: {", ".join(f"{k} ({v})" for k, v in SUPPORTED_LANGUAGES.items())}'}, 400
-
+   
     # Validate voice option
     valid_voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer', 'coral', 'sage']
     if voice not in valid_voices:
@@ -73,7 +70,7 @@ def process_text_to_speech(text: str, voice: str = "alloy", language: str = "en"
 
     try:
         # Get audio data from OpenAI with specified language
-        audio_data = text_to_speech(text, voice, language)
+        audio_data = text_to_speech(text, voice)
         return audio_data, 200
     except Exception as e:
         return {'error': str(e)}, 500

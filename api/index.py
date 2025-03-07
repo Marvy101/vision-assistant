@@ -219,6 +219,27 @@ def vision_docs():
                 
                 <p><strong>past_context</strong> (optional)<br>
                 Previous context or specific questions to consider when describing the image</p>
+
+                <p><strong>language</strong> (optional)<br>
+                Language code for the response. Available options:
+                <ul>
+                    <li><code>en</code> - English (default)</li>
+                    <li><code>es</code> - Spanish</li>
+                    <li><code>fr</code> - French</li>
+                    <li><code>de</code> - German</li>
+                    <li><code>it</code> - Italian</li>
+                    <li><code>pt</code> - Portuguese</li>
+                    <li><code>nl</code> - Dutch</li>
+                    <li><code>pl</code> - Polish</li>
+                    <li><code>ru</code> - Russian</li>
+                    <li><code>ja</code> - Japanese</li>
+                    <li><code>ko</code> - Korean</li>
+                    <li><code>zh</code> - Chinese</li>
+                    <li><code>ar</code> - Arabic</li>
+                    <li><code>hi</code> - Hindi</li>
+                    <li><code>tr</code> - Turkish</li>
+                </ul>
+                </p>
             </div>
 
             <h4>Example Request using cURL:</h4>
@@ -227,8 +248,9 @@ def vision_docs():
     -H "key: wearewinningthiscompetition" \\
     -F "image=@path/to/your/image.jpg" \\
     -F "past_context=I am about to cross the road what should I look out for?" \\
+    -F "language=fr" \\
     https://vision-assistant-sepia.vercel.app/vision</code></pre>
-                <button class="copy-button" onclick="copyToClipboard('curl -X POST \\\n    -H \"key: wearewinningthiscompetition\" \\\n    -F \"image=@path/to/your/image.jpg\" \\\n    -F \"past_context=I am about to cross the road what should I look out for?\" \\\n    https://vision-assistant-sepia.vercel.app/vision')">Copy cURL</button>
+                <button class="copy-button" onclick="copyToClipboard('curl -X POST \\\n    -H \"key: wearewinningthiscompetition\" \\\n    -F \"image=@path/to/your/image.jpg\" \\\n    -F \"past_context=I am about to cross the road what should I look out for?\" \\\n    -F \"language=fr\" \\\n    https://vision-assistant-sepia.vercel.app/vision')">Copy cURL</button>
             </div>
 
             <h4>Response Format:</h4>
@@ -347,10 +369,9 @@ def text_to_speech():
     
     text = data['text']
     voice = data.get('voice', 'alloy')  # Default to alloy if no voice specified
-    language = data.get('language', 'en')  # Default to English if no language specified
 
     # Process the request
-    audio_data, status_code = process_text_to_speech(text, voice, language)
+    audio_data, status_code = process_text_to_speech(text, voice)
     
     # If there was an error, return it
     if status_code != 200:
