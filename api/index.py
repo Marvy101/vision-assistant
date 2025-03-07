@@ -60,6 +60,11 @@ def vision_docs():
     <body>
         <h1>Vision Assistant API Documentation</h1>
         
+        <h2>Base URL</h2>
+        <div class="api-key">
+            <p><strong>Base URL:</strong> <code>https://vision-assistant-sepia.vercel.app/</code></p>
+        </div>
+
         <h2>Authentication</h2>
         <div class="api-key">
             <p><strong>API Key:</strong> <code>wearewinningthiscompetition</code></p>
@@ -89,7 +94,7 @@ def vision_docs():
     -H "key: wearewinningthiscompetition" \\
     -F "image=@path/to/your/image.jpg" \\
     -F "past_context=I am about to cross the road what should I look out for?" \\
-    http://your-server/vision</code></pre>
+    https://vision-assistant-sepia.vercel.app/vision</code></pre>
 
             <h4>Response Format:</h4>
             <pre><code>{
