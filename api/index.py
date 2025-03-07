@@ -241,11 +241,56 @@ def vision_docs():
             </div>
         </div>
 
+        <div class="endpoint">
+            <h3><span class="method">POST</span> <span class="url">/text-to-speech</span></h3>
+            <p>Convert text to speech using OpenAI's text-to-speech API with multiple voice options.</p>
+            
+            <h4>Request</h4>
+            <p><strong>Content-Type:</strong> application/json</p>
+            
+            <h4>Parameters:</h4>
+            <div class="parameter">
+                <p><strong>text</strong> (required)<br>
+                The text to convert to speech</p>
+                
+                <p><strong>voice</strong> (optional)<br>
+                The voice to use for speech synthesis. Available options:
+                <ul>
+                    <li><code>alloy</code> (default) - A neutral voice with balanced warmth</li>
+                    <li><code>echo</code> - A deeper, more resonant voice</li>
+                    <li><code>fable</code> - A warm, engaging storyteller voice</li>
+                    <li><code>onyx</code> - A deep, authoritative voice</li>
+                    <li><code>nova</code> - A professional, polished voice</li>
+                    <li><code>shimmer</code> - A bright, optimistic voice</li>
+                    <li><code>coral</code> - A soft, soothing voice</li>
+                    <li><code>sage</code> - A wise, contemplative voice</li>
+                </ul>
+                </p>
+            </div>
+
+            <h4>Example Request using cURL:</h4>
+            <div class="copy-wrapper">
+                <pre><code>curl -X POST \\
+    -H "Content-Type: application/json" \\
+    -H "key: wearewinningthiscompetition" \\
+    -d '{
+        "text": "Hello! This is a test of the text-to-speech functionality.",
+        "voice": "nova"
+    }' \\
+    https://vision-assistant-sepia.vercel.app/text-to-speech > output.mp3</code></pre>
+                <button class="copy-button" onclick="copyToClipboard('curl -X POST \\\n    -H \"Content-Type: application/json\" \\\n    -H \"key: wearewinningthiscompetition\" \\\n    -d \'{\n        \"text\": \"Hello! This is a test of the text-to-speech functionality.\",\n        \"voice\": \"nova\"\n    }\' \\\n    https://vision-assistant-sepia.vercel.app/text-to-speech > output.mp3')">Copy cURL</button>
+            </div>
+
+            <h4>Response:</h4>
+            <p>Returns an MP3 audio file containing the synthesized speech.</p>
+            <p><strong>Content-Type:</strong> audio/mpeg</p>
+        </div>
+
         <h2>Error Responses</h2>
         <div class="endpoint">
             <ul class="error-list">
                 <li><strong>401:</strong> Invalid API key</li>
-                <li><strong>400:</strong> No image file provided or empty file</li>
+                <li><strong>400:</strong> No image file provided or empty file / No text provided or invalid voice option</li>
                 <li><strong>500:</strong> Server error during processing</li>
             </ul>
         </div>
@@ -256,6 +301,8 @@ def vision_docs():
             <li>Images are processed using advanced AI to generate natural, context-aware descriptions</li>
             <li>When providing past_context, the description will be tailored to address specific concerns or questions</li>
             <li>Text in images will be transcribed when it's crucial to understanding the content</li>
+            <li>The text-to-speech endpoint uses OpenAI's advanced TTS model for natural-sounding speech</li>
+            <li>Different voices can be used to suit various use cases and preferences</li>
         </ul>
     </body>
     </html>
