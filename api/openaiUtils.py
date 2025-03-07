@@ -119,5 +119,5 @@ def text_to_speech(text: str, voice: str = "alloy", language: str = "en") -> byt
 path = "/Users/pelumidada/Documents/code/vision-assistant/testimage2.jpg"
 
 
-response = describe_image(path, "I am about to cross the road what should I look out for?", "french")
-print(json.dumps(response, indent=4))
+# response = describe_image(path, "I am about to cross the road what should I look out for?", "french")
+# print(json.dumps(response, indent=4))
