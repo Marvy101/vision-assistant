@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file
-from main import process_file, process_text_to_speech
+from main import process_file, process_text_to_speech, SUPPORTED_LANGUAGES
 import tempfile
 import os
 
@@ -322,13 +322,14 @@ def upload_file():
     if file.filename == '':
         return {'error': 'No selected file'}, 400
     
-    # Get past_context from form data if provided
+    # Get past_context and language from form data if provided
     past_context = request.form.get('past_context', None)
+    language = request.form.get('language', 'en')
     
     if file:
         try:
             # Process the file using the function from main.py
-            result = process_file(file, past_context)
+            result = process_file(file, past_context, language)
             return result
         except Exception as e:
             return {'error': str(e)}, 500
@@ -339,16 +340,17 @@ def text_to_speech():
     if request.headers.get('key') != API_KEY:
         return {'error': 'Invalid API key'}, 401
 
-    # Get text and voice from request
+    # Get text, voice, and language from request
     data = request.get_json()
     if not data or 'text' not in data:
         return {'error': 'No text provided'}, 400
     
     text = data['text']
     voice = data.get('voice', 'alloy')  # Default to alloy if no voice specified
+    language = data.get('language', 'en')  # Default to English if no language specified
 
     # Process the request
-    audio_data, status_code = process_text_to_speech(text, voice)
+    audio_data, status_code = process_text_to_speech(text, voice, language)
     
     # If there was an error, return it
     if status_code != 200:

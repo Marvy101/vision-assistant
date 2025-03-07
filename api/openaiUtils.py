@@ -8,12 +8,22 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def describe_image(image_path, past_context=None):
+def describe_image(image_path, past_context=None, language="en"):
+    """
+    Describe an image in the specified language.
+    
+    Args:
+        image_path (str): Path to the image file
+        past_context (str, optional): Previous context to consider
+        language (str, optional): Language code (e.g., 'en', 'es', 'fr'). Defaults to 'en'
+    """
     # Encode the image
     encoded_image = encode_image(image_path)
     
-    # Base system prompt
-    system_prompt = """You are an AI assistant designed to help visually impaired individuals by providing descriptions of images live from their camera. Your primary role is to describe the picture, focusing on key visual details such as objects, people, colors, actions, expressions, and context. If the image conveys an emotion, theme, or notable artistic style, include that as well.  Since you're basically the impaired person's eyes, use present language. for example, 'You're looking at...'
+    # Base system prompt with language instruction
+    system_prompt = f"""You are an AI assistant designed to help visually impaired individuals by providing descriptions of images live from their camera. Your primary role is to describe the picture, focusing on key visual details such as objects, people, colors, actions, expressions, and context. If the image conveys an emotion, theme, or notable artistic style, include that as well. Since you're basically the impaired person's eyes, use present language. for example, 'You're looking at...'
+
+IMPORTANT: Provide your response in {language} language.
 
 If there is past context provided, relate your current description to that context. For example, if the past context was a question about crossing the road, focus your description on relevant safety details and navigation information. Make sure your description addresses any concerns or questions from the past context.
 
@@ -21,10 +31,10 @@ If the image contains a significant amount of text that is important to understa
 
 here's the json structure you should follow:
 
-{
+{{
   "description": "<detailed description of what the person is seeing, incorporating and addressing any past context if provided>",
   "read_out": "<optional: transcribed text if it enhances understanding>"
-}
+}}
 
 Only include "read_out" when the text is a crucial part of the image. If the text is minor or incidental, focus on describing its visual context instead."""
 
@@ -82,7 +92,7 @@ Only include "read_out" when the text is a crucial part of the image. If the tex
     # Parse and return the JSON response
     return json.loads(response.choices[0].message.content)
 
-def text_to_speech(text: str, voice: str = "alloy") -> bytes:
+def text_to_speech(text: str, voice: str = "alloy", language: str = "en") -> bytes:
     """
     Convert text to speech using OpenAI's TTS API.
     
@@ -90,10 +100,15 @@ def text_to_speech(text: str, voice: str = "alloy") -> bytes:
         text (str): The text to convert to speech
         voice (str, optional): The voice to use. Defaults to "alloy".
                              Options: alloy, echo, fable, onyx, nova, shimmer, coral, sage
+        language (str, optional): Language code (e.g., 'en', 'es', 'fr'). Defaults to 'en'
     
     Returns:
         bytes: The audio data as bytes
     """
+    # If language is not English, prepend language instruction to ensure proper pronunciation
+    if language != "en":
+        text = f"[Speak in {language}] {text}"
+    
     response = client.audio.speech.create(
         model="tts-1",
         voice=voice,
@@ -104,5 +119,5 @@ def text_to_speech(text: str, voice: str = "alloy") -> bytes:
 path = "/Users/pelumidada/Documents/code/vision-assistant/testimage2.jpg"
 
 
-# response = describe_image(path, "I am about to cross the road what should I look out for?")
-# print(json.dumps(response, indent=4))
+response = describe_image(path, "I am about to cross the road what should I look out for?", "french")
+print(json.dumps(response, indent=4))

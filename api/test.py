@@ -53,7 +53,8 @@ def test_text_to_speech(text: str, voice: str = None):
         voice (str, optional): The voice to use. If not provided, uses default voice.
     """
     # API endpoint URL (local Flask server)
-    url = 'http://127.0.0.1:5000/text-to-speech'
+    # url = 'http://127.0.0.1:5000/text-to-speech'
+    url = 'https://vision-assistant-sepia.vercel.app/text-to-speech'
     
     # Prepare the request data
     data = {'text': text}
@@ -105,6 +106,6 @@ if __name__ == "__main__":
     # # Test case 4: Text-to-speech with custom voice
     print("\nTest Case 4: Text-to-speech with custom voice (nova)")
     test_text_to_speech(
-        "J'aime Dada! Ceci est un test de la fonctionnalité de synthèse vocale avec la voix nova. Laissez-moi divaguer un moment. Le temps aujourd'hui est assez agréable, avec une brise légère et un ciel dégagé. C'est le jour parfait pour une promenade dans le parc ou un pique-nique avec des amis. Avez-vous déjà remarqué comment les feuilles bruissent dans le vent, créant un son apaisant qui peut être très relaxant? La nature a une façon de calmer l'esprit et d'apporter la paix à nos vies occupées. En parlant de nature, saviez-vous qu'il y a plus de 391 000 espèces de plantes dans le monde? Chacune joue un rôle crucial dans le maintien de l'équilibre de notre écosystème. C'est fascinant de penser à la diversité et à la complexité de la vie sur notre planète. Quoi qu'il en soit, je m'égare. Revenons au test de la fonctionnalité de synthèse vocale avec la voix nova.",
+        "أحب دادا! هذا اختبار لوظيفة تحويل النص إلى كلام باستخدام الصوت نوفا. دعني أسترسل قليلاً. الطقس اليوم لطيف جداً، مع نسيم خفيف وسماء صافية. إنه اليوم المثالي للتنزه في الحديقة أو القيام بنزهة مع الأصدقاء. هل لاحظت من قبل كيف تهمس الأوراق في الرياح، مما يخلق صوتاً مهدئاً يمكن أن يكون مريحاً جداً؟ الطبيعة لديها طريقة لتهدئة العقل وجلب السلام إلى حياتنا المزدحمة. بالحديث عن الطبيعة، هل تعلم أن هناك أكثر من 391,000 نوع من النباتات في العالم؟ كل منها يلعب دوراً حيوياً في الحفاظ على توازن نظامنا البيئي. من المثير التفكير في التنوع والتعقيد في الحياة على كوكبنا. على أي حال، أسترسل. لنعد إلى اختبار وظيفة تحويل النص إلى كلام باستخدام الصوت نوفا.",
         voice="nova"
     ) 
